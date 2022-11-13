@@ -1,0 +1,5 @@
+build/
+*.egg-info/
+.env
+*_cache/
+.coverage
