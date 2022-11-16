@@ -12,9 +12,15 @@ parts:
   tasker:
     plugin: python
     source: .
-    python-packages:
-      - .
+    python-packages: [.]
 
 apps:
   tasker:
-    command: bin/tasker
+    command: bin/tasker_gtk
+    extensions: [gnome]
+
+slots:
+  tasker:
+    interface: dbus
+    bus: session
+    name: org.gnome.Tasker
