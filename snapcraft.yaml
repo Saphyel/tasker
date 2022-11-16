@@ -1,0 +1,19 @@
+name: tasker
+summary: Simple task app to remember what you did # 79 char long summary
+description: App the uses an external MongoDB to store and find everything you did previous days
+
+base: core22
+version: '0.1'
+grade: stable
+confinement: strict
+
+parts:
+  tasker:
+    plugin: python
+    source: .
+    python-packages:
+      - .
+
+apps:
+  tasker:
+    command: bin/tasker
