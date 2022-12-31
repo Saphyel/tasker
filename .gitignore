@@ -4,3 +4,6 @@ build/
 *_cache/
 .coverage
 *.snap
+lib/
+bin/
+pyvenv.cfg
