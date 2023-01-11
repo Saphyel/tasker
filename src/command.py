@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import logging
 from argparse import ArgumentParser
 
@@ -28,13 +29,15 @@ def main():
 
     args = parser.parse_args()
     if args.command == "insert":
+        if not args.date:
+            args.date = datetime.utcnow().replace(tzinfo=timezone.utc, hour=0, minute=0, second=0, microsecond=0)
         result = repository.insert(Work(date=args.date, tag=args.tag, details=args.details))
         logger.warning(result)
     elif args.command == "find":
         result = repository.find(Search(tag=args.tag, date=args.date))
-        logger.warning([Work(**item).json() for item in result])
+        [logger.warning(Work(**item).json()) for item in result]
     else:
-        logger.error("Invalid command.")
+        parser.print_help()
 
 
 if __name__ == "__main__":

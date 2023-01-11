@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 
 from pydantic import BaseModel, Field
 
@@ -9,9 +9,7 @@ class Model(BaseModel):
 
 
 class Work(Model):
-    date: datetime = Field(
-        default_factory=datetime.utcnow().replace(tzinfo=timezone.utc, hour=0, minute=0, second=0, microsecond=0)
-    )
+    date: datetime
     tag: str
     details: str
 
