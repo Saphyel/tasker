@@ -3,9 +3,10 @@ summary: Simple task app to remember what you did # 79 char long summary
 description: App the uses an external MongoDB to store and find everything you did previous days
 
 base: core22
-version: '0.1'
+version: '1.0'
 grade: stable
 confinement: strict
+source-code: https://github.com/Saphyel/tasker
 
 parts:
   tasker:
