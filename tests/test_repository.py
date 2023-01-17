@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.model import Work, Search
+from src.model import Work, Search, Query
 from src.repository import WorkRepository
 
 
@@ -20,10 +20,10 @@ class TestWorkRepository:
         self.collection.insert_one.return_value = insert_one_result
         assert self.repository.insert(Work(date=datetime.utcnow(), tag="etiqueta", details="detalles")) == "Id"
 
-    @pytest.mark.parametrize(
-        ["param", "expect"],
-        [(Search(), []), (Search(), [{"_id": "id", "tag": "etiqueta", "details": "detalles", "date": "2022-12-12"}])],
-    )
+    @pytest.mark.parametrize(["param", "expect"], [
+        (Query(limit=1, order="date"), []),
+        (Query(limit=1, order="date"), [{"_id": "id", "tag": "etiqueta", "details": "detalles", "date": "2022-12-12"}])
+    ])
     def test_find(self, param, expect):
-        self.collection.find.return_value = expect
-        assert self.repository.find(param) == expect
+        self.collection.find.return_value.sort.return_value.limit.return_value = expect
+        assert self.repository.find(Search(), param) == expect

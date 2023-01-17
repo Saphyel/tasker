@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class Model(BaseModel):
@@ -17,3 +17,8 @@ class Work(Model):
 class Search(Model):
     date: datetime | None
     tag: str | None
+
+
+class Query(Model):
+    limit: int
+    order: str
