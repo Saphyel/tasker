@@ -3,15 +3,23 @@ from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 from pymongo.database import Database
 
-from model import Work, Query, Search
+from model import WorkInput, Query, Search, SortEnum
 
 
 class WorkRepository:
     def __init__(self, db: Database):
         self.collection: Collection = db.work
 
-    def insert(self, data: Work) -> ObjectId:
+    def insert(self, data: WorkInput) -> ObjectId:
         return self.collection.insert_one(data.dict()).inserted_id
 
     def find(self, search: Search, query: Query) -> Cursor:
-        return self.collection.find(search.dict(exclude_none=True)).sort(query.order).limit(query.limit)
+        params = search.dict(exclude_none=True)
+        if query.last_seen:
+            params["_id"] = {"$gt": query.last_seen}
+        result = self.collection.find(params).limit(query.limit)
+        if query.sort == SortEnum.newest:
+            result = result.sort("date", -1)
+        elif query.sort == SortEnum.oldest:
+            result = result.sort("date", 1)
+        return result

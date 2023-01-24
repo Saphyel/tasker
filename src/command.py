@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from pymongo import MongoClient
 
-from model import Work, Search, Query
+from model import WorkInput, Search, Query, WorkOutput
 from repository import WorkRepository
 from settings import Settings
 
@@ -30,16 +30,18 @@ def main():
     find = subparser.add_parser("find")
     find.add_argument("-t", "--tag")
     find.add_argument("-d", "--date")
-    find.add_argument("-o", "--order", default="date")
+    find.add_argument("-s", "--sort", default="newest")
     find.add_argument("-l", "--limit", type=int, default=10)
 
     args = parser.parse_args()
     if args.command == "insert":
-        result = repository.insert(Work(date=args.date, tag=args.tag, details=args.details))
+        result = repository.insert(WorkInput(date=args.date, tag=args.tag, details=args.details))
         logger.warning(result)
     elif args.command == "find":
-        result = repository.find(Search(tag=args.tag, date=args.date), Query(limit=args.limit, order=args.order))
-        [logger.warning(Work(**item).json()) for item in result]
+        result = repository.find(Search(tag=args.tag, date=args.date), Query(limit=args.limit, sort=args.sort))
+        for item in result:
+            item["id"] = str(item["_id"])
+            logger.warning(WorkOutput(**item).json())
     else:
         parser.print_help()
 
