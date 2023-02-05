@@ -3,14 +3,14 @@ from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 from pymongo.database import Database
 
-from model import WorkInput, Query, Search, SortEnum
+from model import TaskInput, Query, Search, SortEnum
 
 
-class WorkRepository:
+class TaskRepository:
     def __init__(self, db: Database):
-        self.collection: Collection = db.work
+        self.collection: Collection = db.task
 
-    def insert(self, data: WorkInput) -> ObjectId:
+    def insert(self, data: TaskInput) -> ObjectId:
         return self.collection.insert_one(data.dict()).inserted_id
 
     def find(self, search: Search, query: Query) -> Cursor:

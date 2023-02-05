@@ -4,13 +4,13 @@ from datetime import datetime, timezone
 
 from pymongo import MongoClient
 
-from model import WorkInput, Search, Query, WorkOutput
-from repository import WorkRepository
+from model import TaskInput, Search, Query, TaskOutput
+from repository import TaskRepository
 from settings import Settings
 
 settings = Settings()
 client: MongoClient = MongoClient(settings.database_uri)
-repository = WorkRepository(client.task)
+repository = TaskRepository(client.work)
 logger = logging.getLogger(__name__)
 
 
@@ -35,13 +35,13 @@ def main():
 
     args = parser.parse_args()
     if args.command == "insert":
-        result = repository.insert(WorkInput(date=args.date, tag=args.tag, details=args.details))
+        result = repository.insert(TaskInput(date=args.date, tag=args.tag, details=args.details))
         logger.warning(result)
     elif args.command == "find":
         result = repository.find(Search(tag=args.tag, date=args.date), Query(limit=args.limit, sort=args.sort))
         for item in result:
             item["id"] = str(item["_id"])
-            logger.warning(WorkOutput(**item).json())
+            logger.warning(TaskOutput(**item).json())
     else:
         parser.print_help()
 

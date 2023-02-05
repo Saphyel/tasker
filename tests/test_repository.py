@@ -3,8 +3,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.model import WorkInput, Search, Query, SortEnum
-from src.repository import WorkRepository
+from model import TaskInput, Search, Query, SortEnum
+from repository import TaskRepository
 
 db_response = {"_id": "Id", "tag": "algo", "details": "nuevo", "date": "2022-12-12"}
 
@@ -13,14 +13,14 @@ class TestWorkRepository:
     def setup_method(self):
         self.collection = Mock()
         db = Mock()
-        db.work = self.collection
-        self.repository = WorkRepository(db)
+        db.task = self.collection
+        self.repository = TaskRepository(db)
 
     def test_insert(self):
         insert_one_result = Mock()
         insert_one_result.inserted_id = "Id"
         self.collection.insert_one.return_value = insert_one_result
-        assert self.repository.insert(WorkInput(date=datetime.utcnow(), tag="etiqueta", details="detalles")) == "Id"
+        assert self.repository.insert(TaskInput(date=datetime.utcnow(), tag="etiqueta", details="detalles")) == "Id"
 
     @pytest.mark.parametrize(
         ["param", "expect"],

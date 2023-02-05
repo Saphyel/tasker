@@ -9,13 +9,13 @@ class Model(BaseModel):
         anystr_strip_whitespace = True
 
 
-class WorkInput(Model):
+class TaskInput(Model):
     date: datetime
     tag: str
     details: str
 
 
-class WorkOutput(Model):
+class TaskOutput(Model):
     id: str
     date: datetime
     tag: str
