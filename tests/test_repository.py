@@ -3,8 +3,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from model import TaskInput, Search, Pagination, SortEnum, TaskOutput
-from repository import TaskRepository
+from src.model import TaskInput, Search, Pagination, SortEnum, TaskOutput
+from src.repository import TaskRepository
 
 
 db_response = {"_id": "Id", "tag": "algo", "details": "nuevo", "date": "2022-12-12T11:11"}

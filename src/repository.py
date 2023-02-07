@@ -5,8 +5,8 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
 
-from model import TaskInput, Pagination, Search, SortEnum, Result, TaskOutput
-from settings import app_settings
+from src.model import TaskInput, Pagination, Search, SortEnum, Result, TaskOutput
+from src.settings import app_settings
 
 
 class TaskRepository:

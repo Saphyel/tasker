@@ -4,9 +4,9 @@ from datetime import datetime
 
 from pymongo import MongoClient
 
-from model import TaskInput, Search, Pagination
-from repository import TaskRepository
-from settings import app_settings
+from src.model import TaskInput, Search, Pagination
+from src.repository import TaskRepository
+from src.settings import app_settings
 
 client: MongoClient = MongoClient(app_settings.database_uri)
 repository = TaskRepository(client.work)

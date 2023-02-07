@@ -14,9 +14,9 @@ from starlite import (
     Request,
 )
 
-from model import TaskInput, Search, Pagination, SortEnum
-from repository import TaskRepository, task_repository
-from settings import app_settings
+from src.model import TaskInput, Search, Pagination, SortEnum
+from src.repository import TaskRepository, task_repository
+from src.settings import app_settings
 
 
 class TasksViewController(Controller):
