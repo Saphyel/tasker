@@ -1,15 +1,14 @@
 import logging
 from argparse import ArgumentParser
-from datetime import datetime, timezone
+from datetime import datetime
 
 from pymongo import MongoClient
 
-from model import TaskInput, Search, Query, TaskOutput
+from model import TaskInput, Search, Pagination
 from repository import TaskRepository
-from settings import Settings
+from settings import app_settings
 
-settings = Settings()
-client: MongoClient = MongoClient(settings.database_uri)
+client: MongoClient = MongoClient(app_settings.database_uri)
 repository = TaskRepository(client.work)
 logger = logging.getLogger(__name__)
 
@@ -24,7 +23,7 @@ def main():
     insert.add_argument(
         "-d",
         "--date",
-        default=datetime.utcnow().replace(tzinfo=timezone.utc, hour=0, minute=0, second=0, microsecond=0),
+        default=datetime.utcnow(),
     )
 
     find = subparser.add_parser("find")
@@ -38,10 +37,9 @@ def main():
         result = repository.insert(TaskInput(date=args.date, tag=args.tag, details=args.details))
         logger.warning(result)
     elif args.command == "find":
-        result = repository.find(Search(tag=args.tag, date=args.date), Query(limit=args.limit, sort=args.sort))
-        for item in result:
-            item["id"] = str(item["_id"])
-            logger.warning(TaskOutput(**item).json())
+        data = repository.find(Search(tag=args.tag, date=args.date), Pagination(limit=args.limit, sort=args.sort))
+        [logger.warning(item.json()) for item in data.result]
+
     else:
         parser.print_help()
 

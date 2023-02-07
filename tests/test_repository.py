@@ -3,10 +3,12 @@ from unittest.mock import Mock
 
 import pytest
 
-from model import TaskInput, Search, Query, SortEnum
+from model import TaskInput, Search, Pagination, SortEnum, TaskOutput
 from repository import TaskRepository
 
-db_response = {"_id": "Id", "tag": "algo", "details": "nuevo", "date": "2022-12-12"}
+
+db_response = {"_id": "Id", "tag": "algo", "details": "nuevo", "date": "2022-12-12T11:11"}
+endpoint_expect = TaskOutput(id="Id", tag="algo", details="nuevo", date="2022-12-12T11:11")
 
 
 class TestWorkRepository:
@@ -23,9 +25,12 @@ class TestWorkRepository:
         assert self.repository.insert(TaskInput(date=datetime.utcnow(), tag="etiqueta", details="detalles")) == "Id"
 
     @pytest.mark.parametrize(
-        ["param", "expect"],
-        [(Query(limit=1, sort=SortEnum.newest), []), (Query(limit=1, sort=SortEnum.newest), [db_response])],
+        ["param", "expect", "response"],
+        [
+            (Pagination(limit=1, sort=SortEnum.newest), [], []),
+            (Pagination(limit=1, sort=SortEnum.newest), [endpoint_expect], [db_response]),
+        ],
     )
-    def test_find(self, param, expect):
-        self.collection.find.return_value.limit.return_value.sort.return_value = expect
-        assert self.repository.find(Search(), param) == expect
+    def test_find(self, param, expect, response):
+        self.collection.find.return_value.limit.return_value.skip.return_value.sort.return_value = response
+        assert self.repository.find(Search(), param).result == expect

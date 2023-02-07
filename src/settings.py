@@ -1,5 +1,9 @@
 from pydantic import BaseSettings
 
 
-class Settings(BaseSettings):
+class AppSettings(BaseSettings):
     database_uri: str
+    token: str = "hola"
+
+
+app_settings = AppSettings()

@@ -32,7 +32,13 @@ class SortEnum(str, Enum):
     oldest = "oldest"
 
 
-class Query(Model):
+class Pagination(Model):
     limit: int
     sort: SortEnum
-    last_seen: str | None
+    page: int = 1
+    total: int | None
+
+
+class Result(Model):
+    pagination: Pagination
+    result: list

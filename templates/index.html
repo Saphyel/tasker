@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+{% set total_pages = (data.pagination.total / data.pagination.limit) | round(0, 'ceil') %}
+<div class="card">
+    <header class="card-header">
+        <p class="card-header-title">Activity Tasks</p>
+        <a class="card-header-icon" aria-label="add task" href="add?token={{ token }}">
+            <span class="icon"><ion-icon name="add-outline"></ion-icon></span>
+        </a>
+    </header>
+    <div class="card-content">
+        <table class="table is-hoverable is-fullwidth">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Tag</th>
+                <th>Details</th>
+                <!--                <th>Action</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            {% for element in data.result %}
+            <tr id="{{ element.id }}">
+                <td>
+                    <time datetime="{{ element.date }}">{{ element.date }}</time>
+                </td>
+                <td><span class="tag is-info">{{ element.tag }}</span></td>
+                <td>{{ element.details }}</td>
+                <!--                <td><a><span class="icon"><ion-icon name="options-outline"></ion-icon></span></a></td>-->
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer class="card-footer pagination is-centered" role="navigation" aria-label="pagination">
+        <a {% if data.pagination.page != 1 %}href="/?token={{ token }}&page={{ data.pagination.page - 1 }}"{% endif %}
+           class="card-footer-item pagination-previous{% if data.pagination.page == 1 %} is-disabled{% endif %}"
+        >Previous</a>
+        <a {% if data.pagination.page != total_pages %}href="/?token={{ token }}&page={{ data.pagination.page + 1 }}"{% endif %}
+           class="card-footer-item pagination-next{% if data.pagination.page == total_pages %} is-disabled{% endif %}"
+        >Next page</a>
+    </footer>
+</div>
+{% endblock %}
