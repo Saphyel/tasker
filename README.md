@@ -12,7 +12,7 @@ docker build -t tasker .
 ### Run the project in windows
 
 ```commandline
-docker run --rm --env-file .env -it -v ${PWD}:/app tasker bash
+docker run --rm --env-file .env -p 80:80 -it -v ${PWD}:/app tasker bash
 ```
 
 ### Start testing

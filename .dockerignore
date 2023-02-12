@@ -1,0 +1,15 @@
+**/__pycache__/
+*_cache/
+.idea/
+.env
+.git/
+.gitignore
+.github/
+.vscode/
+**/bin
+Dockerfile
+.dockerignore
+.coverage
+LICENSE
+README.md
+snapcraft.yaml
