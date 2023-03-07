@@ -1,10 +1,9 @@
 **/__pycache__/
 build/
 *.egg-info/
-.env
 *_cache/
-.coverage
-*.snap
 lib/
 bin/
 pyvenv.cfg
+.env
+.coverage
