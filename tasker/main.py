@@ -4,7 +4,7 @@ from starlite import Starlite, CompressionConfig, LoggingConfig, TemplateConfig,
 from starlite.contrib.jinja import JinjaTemplateEngine
 from starlite.middleware import LoggingMiddlewareConfig
 
-from src.controllers import view_router
+from tasker.controllers import view_router
 
 logging_middleware_config = LoggingMiddlewareConfig()
 

@@ -4,11 +4,13 @@
 <div class="card">
     <header class="card-header">
         <p class="card-header-title">Activity Tasks</p>
-        <a class="card-header-icon" aria-label="add task" href="add?token={{ token }}">
+        <a class="card-header-icon" aria-label="add task" href="/add?token={{ token }}">
             <span class="icon"><ion-icon name="add-outline"></ion-icon></span>
         </a>
     </header>
     <div class="card-content">
+        <form method="get" action="/?token={{ token }}">
+        </form>
         <table class="table is-hoverable is-fullwidth">
             <thead>
             <tr>
