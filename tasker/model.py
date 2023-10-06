@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class Model(BaseModel):
     class Config:
-        anystr_strip_whitespace = True
+        str_strip_whitespace = True
 
 
 class TaskInput(Model):
@@ -23,8 +23,8 @@ class TaskOutput(Model):
 
 
 class Search(Model):
-    date: datetime | None
-    tag: str | None
+    tag: str | None = None
+    date: datetime | None = None
 
 
 class SortEnum(str, Enum):
@@ -36,7 +36,7 @@ class Pagination(Model):
     limit: int
     sort: SortEnum
     page: int = 1
-    total: int | None
+    total: int | None = None
 
 
 class Result(Model):

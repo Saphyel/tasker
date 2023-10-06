@@ -6,7 +6,7 @@ from pymongo.collection import Collection
 from pymongo.database import Database
 
 from tasker.model import TaskInput, Pagination, Search, SortEnum, Result, TaskOutput
-from tasker.settings import app_settings
+from tasker.config import app_settings
 
 
 class TaskRepository:

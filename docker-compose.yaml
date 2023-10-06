@@ -9,7 +9,7 @@ services:
       - ./templates/:/app/templates/
       - ./tests/:/app/tests/
       - ./pyproject.toml:/app/pyproject.toml
-    command: uvicorn tasker.main:app --host 0.0.0.0 --port 80 --reload
+    command: uvicorn tasker.web:app --host 0.0.0.0 --port 80 --reload
     env_file: [ .env ]
     depends_on:
       - db
