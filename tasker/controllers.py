@@ -1,22 +1,15 @@
 import contextlib
 
-from starlite import (
-    Controller,
-    get,
-    post,
-    Router,
-    NotAuthorizedException,
-    Template,
-    Redirect,
-    Body,
-    RequestEncodingType,
-    Provide,
-    Request,
-)
+from litestar import Controller, get, post, Router, Request
+from litestar.di import Provide
+from litestar.enums import RequestEncodingType
+from litestar.exceptions import NotAuthorizedException
+from litestar.params import Body
+from litestar.response import Template, Redirect
 
+from tasker.config import app_settings
 from tasker.model import TaskInput, Search, Pagination, SortEnum
 from tasker.repository import TaskRepository, task_repository
-from tasker.settings import app_settings
 
 
 class TasksViewController(Controller):
@@ -33,10 +26,10 @@ class TasksViewController(Controller):
         sort: str = SortEnum.newest,
     ) -> Template:
         if not app_settings.token == token:
-            raise NotAuthorizedException
+            raise NotAuthorizedException()
 
         return Template(
-            name="index.html",
+            template_name="index.html",
             context={
                 "token": token,
                 "data": repository.find(Search(tag=tag), Pagination(limit=limit, page=page, sort=sort)),
@@ -46,11 +39,11 @@ class TasksViewController(Controller):
     @get(path="/add")
     async def add(self, token: str) -> Template:
         if not app_settings.token == token:
-            raise NotAuthorizedException
+            raise NotAuthorizedException()
 
-        return Template(name="task.html", context={"token": token})
+        return Template(template_name="task.html", context={"token": token})
 
-    @post(path="/add", status_code=301)
+    @post(path="/add")
     async def new(
         self,
         repository: TaskRepository,
@@ -59,12 +52,11 @@ class TasksViewController(Controller):
         form: TaskInput | None = Body(media_type=RequestEncodingType.URL_ENCODED),
     ) -> Redirect:
         if not app_settings.token == token:
-            raise NotAuthorizedException
+            raise NotAuthorizedException()
 
         if not form:
             request.logger.info(request.headers.dict()["content-type"])
             form = TaskInput(**await request.form())
-
         repository.insert(form)
         return Redirect(path=f"/?token={token}")
 
@@ -80,5 +72,5 @@ async def health_check(repository: TaskRepository) -> str:
 view_router = Router(
     path="",
     route_handlers=[TasksViewController, health_check],
-    dependencies={"repository": Provide(task_repository)},
+    dependencies={"repository": Provide(task_repository, sync_to_thread=False)},
 )

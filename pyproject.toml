@@ -4,16 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tasker"
-version = "3.0"
+version = "4.0"
+dynamic = ["readme"]
 description = ""
+license = {text = "OSL-3.0"}
 authors = []
-readme = "README.md"
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "pymongo<4.6",
-    "pydantic<1.11",
-    "starlite[jinja]<1.52",
+    "pydantic-settings<2.1",
+    "litestar[jinja]<2.2",
     "uvicorn<0.24"
 ]
 [project.optional-dependencies]
@@ -23,16 +24,20 @@ test = [
     "pytest<7.5",
     "pytest-cov<4.2",
 ]
-[tool.setuptools.packages.find]
-include = ["tasker"]
 [project.scripts]
 tasker = "command:main"
 #[project.gui-scripts]
 #tasker-ui = "gui"
 
+[tool.setuptools.packages.find]
+include = ["tasker"]
+[tool.setuptools.dynamic]
+#version = {attr = "tasker.VERSION"}
+readme = {file = ["README.md"]}
+
 [tool.black]
 line-length = 120
-target-version = ['py310']
+target-version = ['py311']
 include = '\.pyi?$'
 
 [tool.mypy]

@@ -13,14 +13,14 @@ EXPOSE $PORT
 
 WORKDIR /app
 
-COPY pyproject.toml /app/
+COPY pyproject.toml README.md ./
 
 RUN pip install .
 
-COPY tasker/ /app/tasker/
-COPY templates/ /app/templates/
+COPY tasker/ ./tasker/
+COPY templates/ ./templates/
 
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app/
 USER appuser
 
-CMD uvicorn tasker.main:app --host 0.0.0.0 --port $PORT
+CMD uvicorn tasker.web:app --host 0.0.0.0 --port $PORT

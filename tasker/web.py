@@ -1,14 +1,17 @@
 from pathlib import Path
 
-from starlite import Starlite, CompressionConfig, LoggingConfig, TemplateConfig, Provide
-from starlite.contrib.jinja import JinjaTemplateEngine
-from starlite.middleware import LoggingMiddlewareConfig
+from litestar import Litestar
+from litestar.config.compression import CompressionConfig
+from litestar.contrib.jinja import JinjaTemplateEngine
+from litestar.logging.config import LoggingConfig
+from litestar.middleware.logging import LoggingMiddlewareConfig
+from litestar.template import TemplateConfig
 
 from tasker.controllers import view_router
 
 logging_middleware_config = LoggingMiddlewareConfig()
 
-app = Starlite(
+app = Litestar(
     route_handlers=[view_router],
     openapi_config=None,
     logging_config=LoggingConfig(),

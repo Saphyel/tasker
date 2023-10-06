@@ -5,7 +5,6 @@
 .git/
 .gitignore
 .github/
-/*.md
 Dockerfile
 .coverage
 **/__pycache__/
